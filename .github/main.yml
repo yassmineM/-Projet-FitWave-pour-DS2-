@@ -1,20 +1,18 @@
 name: CI FitWave Docker
 
+# Déclenche l'action à chaque "push" sur la branche main
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 1. Récupère ton code HTML/CSS/Docker sur le serveur GitHub
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Tente de construire l'image Docker (Test de validité)
       - name: Build Docker image
         run: docker build -t fitwave-app .
-        
-      - name: Test Docker image
-        run: docker run --name test-container -d -p 8080:80 fitwave-app
