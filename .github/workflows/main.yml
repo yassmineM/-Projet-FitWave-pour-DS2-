@@ -14,14 +14,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. TEST (OBLIGATOIRE)
-      - name: Vérifier fichiers HTML
+      # 2. TEST normal
+      - name: Vérifier HTML
         run: |
           if [ ! -f index.html ]; then
-            echo "Erreur : index.html manquant"
+            echo "Erreur : fichier manquant"
             exit 1
           fi
 
-      # 3. BUILD DOCKER
-      - name: Build Docker image
+      # ❌ 3. TEST ERREUR (AJOUTE ICI)
+      - name: Test erreur
+        run: exit 1
+
+      # 4. BUILD DOCKER
+      - name: Build Docker
         run: docker build -t fitwave .
