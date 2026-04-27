@@ -1,9 +1,12 @@
 name: CI FitWave
 
+name: CI FitWave Docker
+
 on:
   push:
-    branches: [main, develop]
+    branches: [ "main", "develop" ]
   pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -12,12 +15,27 @@ jobs:
     steps:
       # 1. Récupérer le code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # 2. TEST (obligatoire)
-      - name: Vérifier fichier HTML
+      # 2. TEST (Étape obligatoire du point 3 de l'énoncé)
+      - name: Vérifier présence fichiers essentiels
         run: |
           if [ ! -f index.html ]; then
+            echo "Erreur : index.html manquant !"
+            exit 1
+          fi
+          echo "Fichiers validés."
+
+      # 3. BUILD DOCKER (Étape obligatoire du point 3)
+      - name: Build Docker image
+        run: docker build -t fitwave-app .
+
+      # 4. SECURITY SCAN (Bonus du point 3)
+      - name: Docker Image Scan
+        uses: snyk/actions/docker@master
+        continue-on-error: true # Pour ne pas bloquer si Snyk n'est pas configuré
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
             echo "Erreur : index.html manquant"
             exit 1
           fi
