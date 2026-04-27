@@ -2,7 +2,7 @@ name: CI FitWave Docker
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -10,15 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Vérifier fichier HTML
-        run: |
-          if [ ! -f index.html ]; then
-            echo "Erreur : index.html introuvable"
-            exit 1
-          fi
-
-      - name: Build Docker image
+      - name: Build Docker
         run: docker build -t fitwave-app .
