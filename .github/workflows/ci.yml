@@ -1,4 +1,4 @@
-name: CI — Validation FitWave
+name: CI
 
 on:
   push:
